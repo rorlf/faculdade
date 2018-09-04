@@ -22,8 +22,8 @@ import javax.swing.JPanel;
  */
 public class CanvasPanelBase extends JPanel implements Runnable{
      
-     private Image cenario,nuvem,montanha,tunel,moeda,mario,bicho,mariomorto;
-     private int count=0,jumping=0,caindo=0,moeda1=1,moeda2=1,moeda3=1,moeda4=1,vivo=1,emcima=0;   
+     private Image cenario,nuvem,montanha,tunel,moeda,mario,mariod,bicho,mariomorto;
+     private int count=0,jumping=0,caindo=0,moeda1=1,moeda2=1,moeda3=1,moeda4=1,vivo=1,emcima=0,lado=0;   
      double px=0, py=0;
     
     private boolean[] key_states = new boolean[256];
@@ -68,6 +68,7 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         tunel = new ImageIcon(this.getClass().getResource("/imagens/mario_pipe.png")).getImage();
         moeda = new ImageIcon(this.getClass().getResource("/imagens/coin.png")).getImage();
         mario = new ImageIcon(this.getClass().getResource("/imagens/mario.png")).getImage();
+        mariod = new ImageIcon(this.getClass().getResource("/imagens/mario_direita.png")).getImage();
         bicho = new ImageIcon(this.getClass().getResource("/imagens/goomba.png")).getImage();
         mariomorto = new ImageIcon(this.getClass().getResource("/imagens/mariodown.png")).getImage();
 
@@ -80,6 +81,7 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         if(vivo==1){
         if (key_states[KeyEvent.VK_RIGHT]){
                 px =  (px +(100 * dt));
+                lado=1;
          }
         if (key_states[KeyEvent.VK_UP]){
             if(caindo==0){
@@ -91,7 +93,8 @@ public class CanvasPanelBase extends JPanel implements Runnable{
 //         }
         if(key_states[KeyEvent.VK_LEFT]){
            
-            px =  (px -(100 * dt)); 
+            px =  (px -(100 * dt));
+            lado=0;
             
          }
             
@@ -226,7 +229,7 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         
         
         if(vivo==1){
-        g.drawImage(mario, (680+horizontal), (373+vertical), w, h, null);
+        g.drawImage(lado(), (680+horizontal), (373+vertical), w, h, null);
         }
         if(vivo==0){
         g.drawImage(mariomorto, (680+horizontal), (373+vertical), w, h, null);
@@ -240,6 +243,15 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         
         
 
+    }
+
+    private Image lado() {
+        if(lado == 1){
+   return mariod;
+   }
+   else{
+   return mario;
+   } 
     }
 
    
