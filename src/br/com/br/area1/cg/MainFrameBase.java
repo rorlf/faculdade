@@ -5,7 +5,9 @@
  */
 package br.com.br.area1.cg;
 
-import br.com.br.area1.cg.key.CanvasPanelKeyboard;
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.net.URL;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -20,16 +22,31 @@ public class MainFrameBase extends JFrame{
          add(new CanvasPanelBase());
         setSize(800, 597);
         setLocationRelativeTo(null);
+       
     } 
     
     public static void main(String[] args){
+        
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run(){
                 new MainFrameBase().setVisible(true);
             }
         });
+        
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run(){
+                 URL url = getClass().getResource("/music/mario_song.wav");
+        AudioClip audio = Applet.newAudioClip(url);
+        audio.play();
+            }
+        });
+               
+      
     }
+    
+    
 
 
 }

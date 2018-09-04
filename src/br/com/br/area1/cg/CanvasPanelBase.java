@@ -6,6 +6,8 @@
 package br.com.br.area1.cg;
 
 import br.com.br.area1.cg.key.CanvasPanelKeyboard;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -13,6 +15,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -34,6 +37,9 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         setFocusable(true);
         load();
         new Thread(this).start();
+        
+        
+        
     }
     
     @Override
@@ -46,6 +52,8 @@ public class CanvasPanelBase extends JPanel implements Runnable{
     public void run(){
         double btime, dtime = 0;
         btime = System.currentTimeMillis();
+       
+        
         while(true){
             update(dtime/1000);
             repaint();
@@ -71,18 +79,21 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         mariod = new ImageIcon(this.getClass().getResource("/imagens/mario_direita.png")).getImage();
         bicho = new ImageIcon(this.getClass().getResource("/imagens/goomba.png")).getImage();
         mariomorto = new ImageIcon(this.getClass().getResource("/imagens/mariodown.png")).getImage();
-
+       
 
 
 
     }
 
     private void update(double dt){  
+                
+
         if(vivo==1){
         if (key_states[KeyEvent.VK_RIGHT]){
             if(limiteDireita()){
                 px =  (px +(125 * dt));
                 lado=1;
+                
             }
          }
         if (key_states[KeyEvent.VK_UP]){
@@ -152,20 +163,27 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         if( px<-258 && px>-300 &&   py>=-93  && py<-73 && moeda1==1){
         count=count+1;
         moeda1=0;
+        play("/music/coin");
         }
          if( px<-320 && px>-370 &&   py>=-93  && py<-73 && moeda2==1){
         count=count+1;
         moeda2=0;
+                play("/music/coin");
+
         }
          
            if( px<-520 && px>-570 &&   py>=-93  && py<-73 && moeda3==1){
         count=count+1;
         moeda3=0;
+                play("/music/coin");
+
         }
                
          if( px<-575 && px>-625 &&   py>=-93  && py<-73 && moeda4==1){
         count=count+1;
         moeda4=0;
+                play("/music/coin");
+
         }
          
          
@@ -185,7 +203,7 @@ if(vidabicho==1){
         jumping=1;
         caindo=0;
         } 
-            if( (localg<=(localm+35) && localg>=(localm-30)) && py>=-28 && vivo==1 && vidabicho==1){
+            if( (localg<=(localm+35) && localg>=(localm-27)) && py>=-28 && vivo==1 && vidabicho==1){
         vivo=0;
         }
             
@@ -311,6 +329,13 @@ if(vidabicho==1){
         }
         else
             return true;
+    }
+
+    private void play(String nome) {
+        URL url = getClass().getResource(nome+".wav");
+        AudioClip audio = Applet.newAudioClip(url);
+        audio.play();
+        
     }
     
     
