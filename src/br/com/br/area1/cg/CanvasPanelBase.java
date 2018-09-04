@@ -25,8 +25,8 @@ import javax.swing.JPanel;
  */
 public class CanvasPanelBase extends JPanel implements Runnable{
      
-     private Image cenario,nuvem,montanha,tunel,moeda,mario,mariod,bicho,mariomorto;
-     private int count=0,jumping=0,caindo=0,moeda1=1,moeda2=1,moeda3=1,moeda4=1,vivo=1,emcima=0,lado=0,limiteD=0,limiteE=0,bichomov=0,vidabicho=1;   
+     private Image cenario,nuvem,montanha,tunel,moeda,mario,mariod,bicho,bichod,mariomorto;
+     private int count=0,jumping=0,caindo=0,moeda1=1,moeda2=1,moeda3=1,moeda4=1,vivo=1,emcima=0,lado=0,ladog=0,bichomov=0,vidabicho=1;   
      double px=0, py=0,gx;
     
     private boolean[] key_states = new boolean[256];
@@ -78,6 +78,8 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         mario = new ImageIcon(this.getClass().getResource("/imagens/mario.png")).getImage();
         mariod = new ImageIcon(this.getClass().getResource("/imagens/mario_direita.png")).getImage();
         bicho = new ImageIcon(this.getClass().getResource("/imagens/goomba.png")).getImage();
+        bichod = new ImageIcon(this.getClass().getResource("/imagens/goombad.png")).getImage();
+
         mariomorto = new ImageIcon(this.getClass().getResource("/imagens/mariodown.png")).getImage();
        
 
@@ -211,6 +213,7 @@ if(vidabicho==1){
           
           if(gx<=182 && bichomov == 0){
           gx =  (gx + (85 * dt));
+          ladog=0;
           }
           
           if(gx>=181){
@@ -218,7 +221,8 @@ if(vidabicho==1){
           }
           
            if(gx<=182 && bichomov==1){
-          gx =  (gx - (85 * dt));          
+          gx =  (gx - (85 * dt)); 
+          ladog=1;
           }
              if(gx<=-181){
              bichomov=0;
@@ -281,7 +285,7 @@ if(vidabicho==1){
         if(vidabicho==1){
         int horizontalg = (int)gx;
         
-        g.drawImage(bicho, (250+horizontalg), 385,w2, h2, null);
+        g.drawImage(ladog(), (250+horizontalg), 385,w2, h2, null);
 }
         
         
@@ -312,6 +316,15 @@ if(vidabicho==1){
    }
    else{
    return mario;
+   } 
+    }
+    
+    private Image ladog() {
+        if(ladog == 1){
+   return bicho;
+   }
+   else{
+   return bichod;
    } 
     }
 
