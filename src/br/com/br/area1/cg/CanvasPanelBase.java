@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 public class CanvasPanelBase extends JPanel implements Runnable{
      
      private Image cenario,nuvem,montanha,tunel,moeda,mario,mariod,bicho,mariomorto;
-     private int count=0,jumping=0,caindo=0,moeda1=1,moeda2=1,moeda3=1,moeda4=1,vivo=1,emcima=0,lado=0;   
+     private int count=0,jumping=0,caindo=0,moeda1=1,moeda2=1,moeda3=1,moeda4=1,vivo=1,emcima=0,lado=0,limiteD=0,limiteE=0;   
      double px=0, py=0;
     
     private boolean[] key_states = new boolean[256];
@@ -80,8 +80,10 @@ public class CanvasPanelBase extends JPanel implements Runnable{
     private void update(double dt){  
         if(vivo==1){
         if (key_states[KeyEvent.VK_RIGHT]){
+            if(limiteDireita()){
                 px =  (px +(100 * dt));
                 lado=1;
+            }
          }
         if (key_states[KeyEvent.VK_UP]){
             if(caindo==0){
@@ -92,12 +94,27 @@ public class CanvasPanelBase extends JPanel implements Runnable{
 //             py =  (py + (100 * dt));
 //         }
         if(key_states[KeyEvent.VK_LEFT]){
-           
+           if(limiteEsquerda()){
             px =  (px -(100 * dt));
             lado=0;
-            
+           }
          }
             
+        
+        
+          if( px<-250 &&   py>=-68  && py<-66 && emcima==1){
+          emcima=0;           
+          caindo =1;        
+        }
+           if( px>-129 &&   py>=-68  && py<-66 && emcima==1){
+          emcima=0;           
+          caindo =1;        
+        }
+           
+           if( px<-129 && px>-250 &&   py>=-68  && py<-66 ){
+          emcima=1;    
+        
+        }
         
         if (jumping==1 ){
         if(py>(-100)){
@@ -111,7 +128,7 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         
         if (caindo ==1 && emcima==0){
          if(py<0){
-           py =  (py + (100 * dt));         
+           py =  (py + (150 * dt));         
         }
          if(py>=0){
          caindo=0;
@@ -120,44 +137,33 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         
          if (caindo ==1 && emcima==1){
          if(py<0){
-           py =  (py + (100 * dt));         
+           py =  (py + (150 * dt));         
         }
-         if(py>=-67){
+         if(py>=-68  && py<-66){
          caindo=0;
          }
         }
         
          
-         if( px<-102 && px>-230 &&   py>=-68  && py<-67 ){
-          emcima=1;     
         
-        }
-          if( px<-250 &&   py>=-69  && py<-66 && emcima==1){
-          emcima=0;           
-          caindo =1;        
-        }
-           if( px>-132 &&   py>=-69  && py<-66 && emcima==1){
-          emcima=0;           
-          caindo =1;        
-        }
            
           
          
-        if( px<-250 && px>-280 &&   py>=-93  && py<-73 && moeda1==1){
+        if( px<-258 && px>-300 &&   py>=-93  && py<-73 && moeda1==1){
         count=count+1;
         moeda1=0;
         }
-         if( px<-320 && px>-340 &&   py>=-93  && py<-73 && moeda2==1){
+         if( px<-320 && px>-370 &&   py>=-93  && py<-73 && moeda2==1){
         count=count+1;
         moeda2=0;
         }
          
-           if( px<-520 && px>-540 &&   py>=-93  && py<-73 && moeda3==1){
+           if( px<-520 && px>-570 &&   py>=-93  && py<-73 && moeda3==1){
         count=count+1;
         moeda3=0;
         }
                
-         if( px<-575 && px>-595 &&   py>=-93  && py<-73 && moeda4==1){
+         if( px<-575 && px>-625 &&   py>=-93  && py<-73 && moeda4==1){
         count=count+1;
         moeda4=0;
         }
@@ -166,7 +172,7 @@ public class CanvasPanelBase extends JPanel implements Runnable{
 //         g2d.drawImage(tunel, 450,350, this);
 //         g.drawImage(mario, (680+horizontal), (373+vertical), w, h, null);
 //         g.drawImage(bicho, 250, 385,w2, h2, null);
-          if( px<-415 && px>-455 &&   py>=-43  && py<10 && vivo==1){
+          if( px<-405 && px>-467 &&   py>=-43  && py<10 && vivo==1){
         vivo=0;
         }
           
@@ -254,6 +260,23 @@ public class CanvasPanelBase extends JPanel implements Runnable{
    } 
     }
 
+    private boolean limiteEsquerda() {
+        if(px<-129&& px>-130 && py>-66){
+        return false;
+        }
+        else
+            return true;
+    }
+    
+      private boolean limiteDireita() {
+        if(px<-250&& px>-251 && py>-66){
+        return false;
+        }
+        else
+            return true;
+    }
+    
+    
    
     
     public class KeyboardAdapter extends KeyAdapter{
@@ -266,6 +289,7 @@ public class CanvasPanelBase extends JPanel implements Runnable{
     public void keyPressed(KeyEvent e){
         key_states[e.getKeyCode()] = true;
     }
+    
   
     
 
