@@ -23,8 +23,8 @@ import javax.swing.JPanel;
 public class CanvasPanelBase extends JPanel implements Runnable{
      
      private Image cenario,nuvem,montanha,tunel,moeda,mario,mariod,bicho,mariomorto;
-     private int count=0,jumping=0,caindo=0,moeda1=1,moeda2=1,moeda3=1,moeda4=1,vivo=1,emcima=0,lado=0,limiteD=0,limiteE=0;   
-     double px=0, py=0;
+     private int count=0,jumping=0,caindo=0,moeda1=1,moeda2=1,moeda3=1,moeda4=1,vivo=1,emcima=0,lado=0,limiteD=0,limiteE=0,bichomov=0,vidabicho=1;   
+     double px=0, py=0,gx;
     
     private boolean[] key_states = new boolean[256];
      
@@ -81,7 +81,7 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         if(vivo==1){
         if (key_states[KeyEvent.VK_RIGHT]){
             if(limiteDireita()){
-                px =  (px +(100 * dt));
+                px =  (px +(125 * dt));
                 lado=1;
             }
          }
@@ -95,7 +95,7 @@ public class CanvasPanelBase extends JPanel implements Runnable{
 //         }
         if(key_states[KeyEvent.VK_LEFT]){
            if(limiteEsquerda()){
-            px =  (px -(100 * dt));
+            px =  (px -(125 * dt));
             lado=0;
            }
          }
@@ -172,9 +172,41 @@ public class CanvasPanelBase extends JPanel implements Runnable{
 //         g2d.drawImage(tunel, 450,350, this);
 //         g.drawImage(mario, (680+horizontal), (373+vertical), w, h, null);
 //         g.drawImage(bicho, 250, 385,w2, h2, null);
-          if( px<-405 && px>-467 &&   py>=-43  && py<10 && vivo==1){
+//          if( px<-405 && px>-467 &&   py>=-43  && py<10 && vivo==1){
+//        vivo=0;
+//        }
+
+if(vidabicho==1){
+ double localg=(int)gx+250;
+ double localm=(int)px+680;
+
+   if( (localg<=(localm+35) && localg>=(localm-30)) && py<-28 &&py>-29 && vivo==1){
+        vidabicho=0;
+        jumping=1;
+        caindo=0;
+        } 
+            if( (localg<=(localm+35) && localg>=(localm-30)) && py>=-28 && vivo==1 && vidabicho==1){
         vivo=0;
         }
+            
+        
+          
+          if(gx<=182 && bichomov == 0){
+          gx =  (gx + (85 * dt));
+          }
+          
+          if(gx>=181){
+             bichomov=1;
+          }
+          
+           if(gx<=182 && bichomov==1){
+          gx =  (gx - (85 * dt));          
+          }
+             if(gx<=-181){
+             bichomov=0;
+          }
+          } 
+           
           
           
         }
@@ -228,8 +260,13 @@ public class CanvasPanelBase extends JPanel implements Runnable{
         g2d.drawImage(moeda, 410,290, this);
         }
         
-        g.drawImage(bicho, 250, 385,w2, h2, null);
-
+        if(vidabicho==1){
+        int horizontalg = (int)gx;
+        
+        g.drawImage(bicho, (250+horizontalg), 385,w2, h2, null);
+}
+        
+        
         int horizontal = (int)px;
         int vertical = (int)py;
         
