@@ -352,6 +352,8 @@ if(vidabicho==1){
     }
     
     
+    
+    
    
     
     public class KeyboardAdapter extends KeyAdapter{
